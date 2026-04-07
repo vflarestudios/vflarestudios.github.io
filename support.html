@@ -287,10 +287,12 @@
 
       <button class="submit-btn" onclick="sendEmail()">Send message →</button>
 
-      <span class="direct-email">
-        or email directly &nbsp;
-        <a href="mailto:vflarestudios@gmail.com">vflarestudios@gmail.com</a>
-      </span>
+      <div id="fallback" style="margin-top:20px; opacity:0; transform:translateY(8px); transition: opacity 0.5s ease, transform 0.5s ease;">
+        <p style="font-size:9px; font-weight:300; letter-spacing:0.15em; text-transform:uppercase; color:rgba(180,200,240,0.4); line-height:1.9;">
+          Nothing opened? Your device may not have a mail app set up.<br>
+          Email us directly at &nbsp;<a href="mailto:vflarestudios@gmail.com" style="color:var(--teal); text-decoration:none; border-bottom:1px solid rgba(0,229,204,0.3); padding-bottom:1px;">vflarestudios@gmail.com</a>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -370,6 +372,12 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+
+      setTimeout(function() {
+        var fb = document.getElementById('fallback');
+        fb.style.opacity = '1';
+        fb.style.transform = 'translateY(0)';
+      }, 1000);
     }
   </script>
 
