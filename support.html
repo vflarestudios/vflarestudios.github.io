@@ -356,16 +356,20 @@
       if (!reason)  { alert('Please select a reason for your message.'); return; }
       if (!message) { alert('Please write a message before sending.'); return; }
 
-      const subject = reason + (game ? ' — ' + game : '');
+      const subject = reason + (game ? ' \u2014 ' + game : '');
       let body = '';
       if (name)  body += 'Name: '   + name   + '\n';
       if (email) body += 'Email: '  + email  + '\n';
       if (game)  body += 'Game: '   + game   + '\n';
       body += 'Reason: ' + reason + '\n\n' + message;
 
-      window.location.href = 'mailto:vflarestudios@gmail.com'
+      const a = document.createElement('a');
+      a.href = 'mailto:vflarestudios@gmail.com'
         + '?subject=' + encodeURIComponent(subject)
         + '&body='    + encodeURIComponent(body);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
   </script>
 
