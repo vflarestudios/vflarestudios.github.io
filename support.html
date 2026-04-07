@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support — VFlare Studios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:     #0d1b2e;
+      --fg:     #e8eef8;
+      --muted:  rgba(180, 200, 240, 0.4);
+      --pink:   #ff4d8f;
+      --orange: #ff9c2a;
+      --teal:   #00e5cc;
+      --purple: #a855f7;
+      --yellow: #ffe94d;
+      --green:  #4dffb0;
+    }
+
+    html, body { min-height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Geist Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+    .corner { position: fixed; width: 18px; height: 18px; opacity: 0.25; z-index: 2; pointer-events: none; }
+    .corner--tl { top: 22px; left: 22px;   border-top: 1px solid var(--fg); border-left:  1px solid var(--fg); }
+    .corner--tr { top: 22px; right: 22px;  border-top: 1px solid var(--fg); border-right: 1px solid var(--fg); }
+    .corner--bl { bottom: 22px; left: 22px;  border-bottom: 1px solid var(--fg); border-left:  1px solid var(--fg); }
+    .corner--br { bottom: 22px; right: 22px; border-bottom: 1px solid var(--fg); border-right: 1px solid var(--fg); }
+
+    /* ── Nav ── */
+    .nav {
+      position: relative; z-index: 3;
+      width: 100%; padding: 28px 40px;
+      opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+    }
+    .nav a {
+      font-size: 10px; font-weight: 300; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--muted); text-decoration: none;
+      border-bottom: 1px solid transparent; padding-bottom: 2px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .nav a:hover { color: var(--teal); border-color: var(--teal); }
+
+    /* ── Main ── */
+    .container {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 640px;
+      padding: 0 24px 120px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-size: 10px; font-weight: 300; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 10vw, 72px); font-weight: 300; line-height: 1;
+      color: var(--fg); margin-bottom: 18px;
+      text-shadow: 0 0 60px rgba(100,140,255,0.3);
+      opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.35s both;
+    }
+
+    .divider {
+      width: 40px; height: 1px;
+      background: linear-gradient(90deg, var(--pink), var(--orange), var(--yellow), var(--teal), var(--purple));
+      margin: 0 auto 18px;
+      opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.5s both;
+    }
+
+    .tagline {
+      font-size: 10px; font-weight: 300; letter-spacing: 0.18em;
+      color: var(--muted); text-transform: uppercase; margin-bottom: 52px;
+      opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.55s both;
+    }
+
+    /* ── Topic cards ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 52px;
+      opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.65s both;
+    }
+    @media (max-width: 480px) { .cards { grid-template-columns: 1fr; } }
+
+    .card {
+      border: 1px solid rgba(180,200,240,0.1);
+      border-radius: 4px;
+      padding: 16px 14px;
+      text-align: left;
+      background: rgba(255,255,255,0.02);
+    }
+    .card-icon { font-size: 14px; margin-bottom: 8px; display: block; }
+    .card-title {
+      font-size: 9px; font-weight: 400; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--fg); margin-bottom: 4px;
+    }
+    .card-desc {
+      font-size: 9px; font-weight: 300; letter-spacing: 0.06em;
+      color: var(--muted); line-height: 1.6;
+    }
+
+    /* ── Form ── */
+    .form-block {
+      text-align: left;
+      opacity: 0; animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.75s both;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 9px; font-weight: 300; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+    .field { margin-bottom: 16px; }
+
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(180,200,240,0.12);
+      border-radius: 3px;
+      color: var(--fg);
+      font-family: 'Geist Mono', monospace;
+      font-size: 12px; font-weight: 300;
+      letter-spacing: 0.06em;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    input::placeholder, textarea::placeholder { color: rgba(180,200,240,0.2); }
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(0,229,204,0.45);
+      background: rgba(0,229,204,0.04);
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath stroke='rgba(180,200,240,0.35)' stroke-width='1.2' fill='none' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+      cursor: pointer;
+    }
+    select option { background: #0d1b2e; color: var(--fg); }
+
+    textarea { resize: vertical; min-height: 120px; line-height: 1.7; }
+
+    .submit-btn {
+      display: inline-block; margin-top: 8px;
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px; font-weight: 300;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--bg);
+      background: var(--teal);
+      border: none; border-radius: 3px;
+      padding: 12px 28px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .submit-btn:hover  { opacity: 0.85; }
+    .submit-btn:active { transform: scale(0.98); }
+
+    .direct-email {
+      display: block; margin-top: 20px;
+      font-size: 9px; font-weight: 300; letter-spacing: 0.15em;
+      color: rgba(180,200,240,0.25); text-transform: uppercase;
+    }
+    .direct-email a {
+      color: var(--muted); text-decoration: none;
+      border-bottom: 1px solid rgba(180,200,240,0.15);
+      padding-bottom: 1px; transition: color 0.3s, border-color 0.3s;
+    }
+    .direct-email a:hover { color: var(--teal); border-color: var(--teal); }
+
+    /* ── Footer ── */
+    .footer {
+      position: fixed; bottom: 20px; left: 0; right: 0;
+      text-align: center; font-size: 9px; letter-spacing: 0.15em;
+      color: rgba(180,200,240,0.18); text-transform: uppercase; z-index: 2;
+    }
+    .footer a { color: inherit; text-decoration: none; transition: color 0.3s; }
+    .footer a:hover { color: var(--teal); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="stars"></canvas>
+  <div class="corner corner--tl"></div>
+  <div class="corner corner--tr"></div>
+  <div class="corner corner--bl"></div>
+  <div class="corner corner--br"></div>
+
+  <div class="nav">
+    <a href="/">← VFlare Studios</a>
+  </div>
+
+  <div class="container">
+    <p class="eyebrow">VFlare Studios</p>
+    <h1>Support</h1>
+    <div class="divider"></div>
+    <p class="tagline">We read every message · reply within 1–2 days</p>
+
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🐛</span>
+        <p class="card-title">Bug report</p>
+        <p class="card-desc">Something isn't working as expected</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">💬</span>
+        <p class="card-title">Question</p>
+        <p class="card-desc">Need help with a game or feature</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">💡</span>
+        <p class="card-title">Feedback</p>
+        <p class="card-desc">Ideas and suggestions for us</p>
+      </div>
+    </div>
+
+    <div class="form-block">
+      <div class="form-row">
+        <div class="field">
+          <label class="form-label" for="name">Your name</label>
+          <input type="text" id="name" placeholder="Alex" />
+        </div>
+        <div class="field">
+          <label class="form-label" for="email">Your email</label>
+          <input type="email" id="email" placeholder="you@example.com" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label class="form-label" for="game">Game</label>
+          <select id="game">
+            <option value="">Select a game…</option>
+            <option value="PopBlox!">PopBlox!</option>
+            <option value="Other / General">Other / General</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="form-label" for="reason">Reason</label>
+          <select id="reason">
+            <option value="">Select a reason…</option>
+            <option value="Bug report">Bug report</option>
+            <option value="Crash / app not opening">Crash / app not opening</option>
+            <option value="In-app purchase issue">In-app purchase issue</option>
+            <option value="Feature request">Feature request</option>
+            <option value="Privacy / data request">Privacy / data request</option>
+            <option value="General question">General question</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="form-label" for="message">Message</label>
+        <textarea id="message" placeholder="Describe your issue or question. For bugs, including your device model and OS version helps us fix things faster."></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="sendEmail()">Send message →</button>
+
+      <span class="direct-email">
+        or email directly &nbsp;
+        <a href="mailto:vflarestudios@gmail.com">vflarestudios@gmail.com</a>
+      </span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="/privacy-policy.html">Privacy Policy</a>
+    &nbsp;&nbsp;·&nbsp;&nbsp;
+    <a href="/terms.html">Terms of Service</a>
+    &nbsp;&nbsp;·&nbsp;&nbsp;
+    &copy; 2026 VFlare Studios
+  </div>
+
+  <script>
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    function initStars() {
+      stars = [];
+      const count = Math.floor((canvas.width * canvas.height) / 3000);
+      const colors = ['200,220,255','255,77,143','0,229,204','168,85,247','255,233,77','77,255,176'];
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd = Math.random() * 0.08 + 0.02;
+        stars.push({
+          x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.2, alpha: Math.random() * 0.7 + 0.1,
+          twinkleSpeed: Math.random() * 0.015 + 0.003,
+          offset: Math.random() * Math.PI * 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: Math.cos(angle) * spd, vy: Math.sin(angle) * spd
+        });
+      }
+    }
+    let t = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      t += 0.008;
+      stars.forEach(s => {
+        s.x += s.vx; s.y += s.vy;
+        if (s.x < -2) s.x = canvas.width + 2;
+        if (s.x > canvas.width + 2) s.x = -2;
+        if (s.y < -2) s.y = canvas.height + 2;
+        if (s.y > canvas.height + 2) s.y = -2;
+        const twinkle = s.alpha * (0.6 + 0.4 * Math.sin(t * s.twinkleSpeed * 60 + s.offset));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${s.color},${twinkle})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    resize(); initStars(); draw();
+    window.addEventListener('resize', () => { resize(); initStars(); });
+
+    function sendEmail() {
+      const name    = document.getElementById('name').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const game    = document.getElementById('game').value;
+      const reason  = document.getElementById('reason').value;
+      const message = document.getElementById('message').value.trim();
+
+      if (!email)   { alert('Please enter your email address so we can reply.'); return; }
+      if (!reason)  { alert('Please select a reason for your message.'); return; }
+      if (!message) { alert('Please write a message before sending.'); return; }
+
+      const subject = reason + (game ? ' — ' + game : '');
+      let body = '';
+      if (name)  body += 'Name: '   + name   + '\n';
+      if (email) body += 'Email: '  + email  + '\n';
+      if (game)  body += 'Game: '   + game   + '\n';
+      body += 'Reason: ' + reason + '\n\n' + message;
+
+      window.location.href = 'mailto:vflarestudios@gmail.com'
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body='    + encodeURIComponent(body);
+    }
+  </script>
+
+</body>
+</html>
